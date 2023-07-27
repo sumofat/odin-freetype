@@ -2,7 +2,7 @@ package freetype
 
 import "core:c"
 
-when ODIN_OS == "windows" {
+when ODIN_OS == .Windows{
 	foreign import freetype "freetype.lib";
 }
 
@@ -147,7 +147,7 @@ Face_Rec :: struct {
     available_sizes     : Bitmap_Size,
 
     num_charmaps        : c.int,
-    charmaps            : ^Char_Map,
+    charmaps            : ^Char_Map_Rec,
 
     generic             : Generic,
 
@@ -426,6 +426,8 @@ foreign freetype {
     @(link_name="FT_Done_Face")       done_face       :: proc(face: Face) -> Error ---
 
     @(link_name="FT_Load_Char")     load_char     :: proc(face: Face, char_code: c.ulong, load_flags: Load_Flags) -> Error ---
+    @(link_name="FT_Get_Char_Index")     get_char_index :: proc(face: Face, char_code: c.ulong) -> c.uint ---
+    @(link_name="FT_Get_Kerning")   get_kerning :: proc(face: Face, left_glyph : c.uint,right_glyph : c.uint,kern_mode : c.uint, akerning : ^Vector ) -> Error ---
     @(link_name="FT_Set_Char_Size") set_char_size :: proc(face: Face, char_width, char_height: F26Dot6, horz_resolution, vert_resolution: c.uint) -> Error ---
 
     @(link_name="FT_Render_Glyph") render_glyph :: proc(slot: Glyph_Slot, render_mode: Render_Mode) -> Error ---
